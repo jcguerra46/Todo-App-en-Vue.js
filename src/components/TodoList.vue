@@ -44,12 +44,12 @@
 			<div>
 				<button :class="{ active: filter == 'all' }" @click="filter = 'all'">Todos</button>
 				<button :class="{ active: filter == 'active' }" @click="filter = 'active'">Pendientes</button>
-				<button :class="{ active: filter == 'completed' }" @click="filter = 'completed'">Completadas</button>
+				<button :class="{ active: filter == 'completed' }" @click="filter = 'completed'">Completada	s</button>
 			</div>
 			<div>
 				<transition name="fade">
 					<button v-if="showClearCompletedButton"
-						@click="clearCompleted">Quitar tareas completadas</button>
+						@click="clearCompleted">Quitar todas las tareas completadas</button>
 				</transition>
 			</div>
 		</div>
