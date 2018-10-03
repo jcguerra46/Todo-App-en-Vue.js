@@ -49,7 +49,7 @@
 			<div>
 				<transition name="fade">
 					<button v-if="showClearCompletedButton"
-						@click="clearCompleted">Quitar todas las tareas completadas</button>
+						@click="clearCompleted">Quitar tareas completadas</button>
 				</transition>
 			</div>
 		</div>
