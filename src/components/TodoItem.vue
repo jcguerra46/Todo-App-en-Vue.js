@@ -3,7 +3,7 @@
 		<div class="todo-item-left">
 			<input type="checkbox" v-model="completed" @change="doneEdit" />
 			<div v-if="!editing" 
-						 @click="editTodo" 
+						 @dblclick="editTodo" 
 						 class="todo-item-label"
 						 :class="{completed : completed}"
 						 >{{ todo.title }}</div>
@@ -16,9 +16,12 @@
 						@keyup.esc="cancelEdit"
 						v-focus />
 			</div>
-			<div class="remove-item" @click="removeTodo(index)">
-				&times;
-			</div>		
+			<div>
+				<button @click="pluralize">Plural</button>
+				<span class="remove-item" @click="removeTodo(index)">
+					&times;
+				</span>	
+			</div>	
 	</div>
 </template>
 
@@ -48,6 +51,12 @@
 				'beforeEditCache': '',
 			}
 		},
+		created() {
+			eventBus.$on('pluralize', this.handlePluralize)
+		},
+		beforeDestroy() {
+			eventBus.$off('pluralize', this.handlePluralize)
+		},
 		watch: {
 			checkAll() {
 				// if (this.checkAll) {
@@ -74,10 +83,6 @@
 				this.beforeEditCache = this.title
 				this.editing = true
 			},
-			cancelEdit() {
-				this.title = this.beforeEditCache
-				this.editing = false
-			},
 			doneEdit() {
 				// No permitir registro en blanco
 				if(this.title.trim() == '') {
@@ -94,6 +99,25 @@
 					}
 				})
 			},
+			cancelEdit() {
+				this.title = this.beforeEditCache
+				this.editing = false
+			},
+			pluralize() {
+      			eventBus.$emit('pluralize')
+    		},
+    		handlePluralize() {
+      			this.title = this.title + 's'
+      			eventBus.$emit('finishedEdit', {
+					'index': this.index,
+					'todo': {
+						'id': this.id,
+						'title': this.title,
+						'completed': this.completed,
+						'editing': this.editing,
+					}
+				})
+			}
 		}
 	}
 </script>
